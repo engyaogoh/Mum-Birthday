@@ -11,25 +11,31 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Great+Vibes&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0b0a12;
-  --bg2:#151226;
-  --bg3:#1d1840;
-  --gold:#e8c97a;
-  --gold2:#d9a441;
-  --cream:#f5ecd9;
-  --rose:#e58b9d;
-  --muted:#b9aecd;
-  --line:rgba(232,201,122,.18);
+  /* Warm painterly palette drawn from the tribute film */
+  --bg:#f6eeda;          /* warm cream paper */
+  --bg2:#f1e3c6;         /* deeper cream */
+  --bg3:#fff8eb;         /* light sunlit */
+  --ink:#4a3b2a;         /* warm brown text */
+  --ink-soft:#6f5c44;
+  --gold:#c9a227;        /* amber gold */
+  --gold-deep:#a87f1f;
+  --gold-soft:#e6cf8a;
+  --sage:#8a9a6b;        /* sage green */
+  --sage-deep:#6f8160;
+  --terracotta:#c2703d;  /* terracotta */
+  --rose:#c98a7a;
+  --line:rgba(169,129,60,.28);
   --serif:'Cormorant Garamond',Georgia,serif;
   --display:'Playfair Display',Georgia,serif;
   --script:'Great Vibes',cursive;
   --sans:'Inter',system-ui,sans-serif;
+  --shadow:0 10px 40px rgba(120,90,40,.18);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
   background:var(--bg);
-  color:var(--cream);
+  color:var(--ink);
   font-family:var(--serif);
   font-size:20px;
   line-height:1.75;
@@ -37,43 +43,56 @@ body{
   cursor:none;
 }
 @media (hover:none){body{cursor:auto}}
-a{color:var(--gold);text-decoration:none}
+a{color:var(--gold-deep);text-decoration:none}
+
+/* ---------- Painterly paper texture overlay ---------- */
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(1200px 600px at 15% -5%, rgba(255,248,235,.9), transparent 60%),
+    radial-gradient(900px 500px at 110% 20%, rgba(230,207,138,.35), transparent 55%),
+    radial-gradient(800px 600px at 50% 120%, rgba(138,154,107,.14), transparent 60%);
+}
 
 /* ---------- Custom cursor ---------- */
 .cursor-dot,.cursor-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:9999;border-radius:50%;transform:translate(-50%,-50%)}
-.cursor-dot{width:8px;height:8px;background:var(--gold)}
-.cursor-ring{width:40px;height:40px;border:1px solid rgba(232,201,122,.5);transition:width .25s,height .25s,opacity .25s;opacity:0}
+.cursor-dot{width:8px;height:8px;background:var(--terracotta)}
+.cursor-ring{width:40px;height:40px;border:1px solid rgba(194,112,61,.5);transition:width .25s,height .25s,opacity .25s;opacity:0}
 @media (hover:none){.cursor-dot,.cursor-ring{display:none}}
 
 /* ---------- Scroll progress ---------- */
-#progress{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold2),var(--gold));z-index:1000}
+#progress{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold-deep),var(--terracotta));z-index:1000}
 
-/* ---------- Ambient stars ---------- */
-#stars{position:fixed;inset:0;z-index:0;pointer-events:none}
-.star{position:absolute;background:#fff;border-radius:50%;opacity:.5;animation:twinkle 4s ease-in-out infinite}
-@keyframes twinkle{0%,100%{opacity:.15}50%{opacity:.8}}
+/* ---------- Floating petals/fireflies ---------- */
+#petals{position:fixed;inset:0;z-index:1;pointer-events:none}
+.petal{position:absolute;font-size:18px;opacity:0;animation:drift linear infinite}
+@keyframes drift{
+  0%{transform:translateY(-6vh) rotate(0deg);opacity:0}
+  12%{opacity:.8}
+  100%{transform:translateY(106vh) rotate(720deg);opacity:0}
+}
 
 /* ---------- Section base ---------- */
 section{position:relative;z-index:2;min-height:100vh;padding:110px 24px;display:flex;flex-direction:column;justify-content:center}
-.wrap{max-width:820px;margin:0 auto;width:100%}
+.wrap{max-width:860px;margin:0 auto;width:100%}
 
 /* ---------- Hero ---------- */
-#hero{text-align:center;justify-content:center;min-height:100vh;overflow:hidden}
+#hero{text-align:center;justify-content:center;min-height:100vh;overflow:hidden;position:relative}
 #hero .wrap{position:relative;z-index:3}
-.pretext{font-family:var(--sans);letter-spacing:.45em;text-transform:uppercase;font-size:12px;color:var(--muted);margin-bottom:26px}
-.script{font-family:var(--script);font-size:64px;color:var(--gold);font-weight:400;line-height:1.1;margin-bottom:12px}
-.hero-title{font-family:var(--display);font-weight:600;font-size:clamp(52px,10vw,120px);letter-spacing:.02em;margin-bottom:30px;
-  background:linear-gradient(180deg,#fff 0%,var(--gold) 70%);-webkit-background-clip:text;background-clip:text;color:transparent;
-  text-shadow:none}
-.hero-sub{font-size:22px;font-style:italic;color:var(--cream);opacity:.9;max-width:640px;margin:0 auto 44px}
-.cta{font-family:var(--sans);letter-spacing:.2em;text-transform:uppercase;font-size:12px;color:var(--gold);
-  border:1px solid var(--line);padding:16px 34px;border-radius:999px;display:inline-block;transition:.3s;cursor:pointer;background:rgba(232,201,122,.04)}
-.cta:hover{background:rgba(232,201,122,.14);transform:translateY(-2px)}
+.pretext{font-family:var(--sans);letter-spacing:.45em;text-transform:uppercase;font-size:12px;color:#8a6a3a;margin-bottom:26px;font-weight:500}
+.script{font-family:var(--script);font-size:64px;color:var(--gold-deep);font-weight:400;line-height:1.1;margin-bottom:12px}
+.hero-title{font-family:var(--display);font-weight:600;font-size:clamp(52px,10vw,118px);letter-spacing:.02em;margin-bottom:30px;
+  background:linear-gradient(180deg,#7a5a20 0%,var(--gold) 55%,#d9b45a 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-sub{font-size:22px;font-style:italic;color:var(--ink-soft);max-width:660px;margin:0 auto 44px}
+.cta{font-family:var(--sans);letter-spacing:.2em;text-transform:uppercase;font-size:12px;color:var(--gold-deep);
+  border:1px solid var(--line);padding:16px 34px;border-radius:999px;display:inline-block;transition:.3s;cursor:pointer;background:rgba(201,162,39,.06)}
+.cta:hover{background:rgba(201,162,39,.16);transform:translateY(-2px)}
 .candles{display:flex;justify-content:center;gap:22px;margin-top:52px;align-items:flex-end}
-.candle{width:14px;height:74px;background:linear-gradient(180deg,var(--cream),#d8c49b);border-radius:6px 6px 3px 3px;position:relative;transition:transform .2s}
+.candle{width:14px;height:74px;background:linear-gradient(180deg,#f4e6c8,#d9c49b);border-radius:6px 6px 3px 3px;position:relative;transition:transform .2s;
+  box-shadow:inset 0 0 0 1px rgba(120,90,40,.15)}
 .candle:hover{transform:scale(1.08)}
 .candle .flame{position:absolute;top:-26px;left:50%;width:16px;height:22px;transform:translateX(-50%);
-  background:radial-gradient(circle at 50% 80%,#fff 0%,var(--gold) 55%,rgba(232,145,60,.7) 100%);
+  background:radial-gradient(circle at 50% 80%,#fff 0%,#f4c542 55%,rgba(201,112,39,.75) 100%);
   border-radius:50% 50% 50% 50%/60% 60% 40% 40%;filter:blur(.3px);
   animation:flicker 2.6s ease-in-out infinite}
 .candle .flame::after{content:"";position:absolute;inset:auto 0 0 0;height:70%;background:radial-gradient(circle,#fff 0%,transparent 70%);filter:blur(4px)}
@@ -85,43 +104,69 @@ section{position:relative;z-index:2;min-height:100vh;padding:110px 24px;display:
 .reveal.d1{transition-delay:.12s}.reveal.d2{transition-delay:.24s}.reveal.d3{transition-delay:.36s}
 
 /* ---------- Section headers ---------- */
-.eyebrow{font-family:var(--sans);letter-spacing:.4em;text-transform:uppercase;font-size:11px;color:var(--gold);margin-bottom:20px}
-h2.chapter-title{font-family:var(--display);font-size:clamp(34px,6vw,60px);font-weight:600;margin-bottom:30px;line-height:1.15}
+.eyebrow{font-family:var(--sans);letter-spacing:.4em;text-transform:uppercase;font-size:11px;color:var(--terracotta);margin-bottom:20px}
+h2.chapter-title{font-family:var(--display);font-size:clamp(34px,6vw,60px);font-weight:600;margin-bottom:30px;line-height:1.15;color:var(--gold-deep)}
+
+/* ---------- Film section ---------- */
+#film{min-height:auto;padding:100px 24px;text-align:center}
+#film .wrap{max-width:900px}
+.video-frame{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:22px;box-shadow:var(--shadow);
+  border:1px solid var(--line);background:#000;margin:10px auto 0}
+.video-frame iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
+.film-note{font-family:var(--sans);font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin-top:26px}
+
+/* ---------- Storyboard gallery ---------- */
+#storyboard{padding:40px 24px 90px;text-align:center;min-height:auto}
+.storyboard-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-top:6px}
+.sb{position:relative;border-radius:16px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line);
+  aspect-ratio:16/9;background:var(--bg3);transition:transform .35s}
+.sb:hover{transform:translateY(-4px) scale(1.02)}
+.sb img{width:100%;height:100%;object-fit:cover;display:block}
+.sb .cap{position:absolute;bottom:0;left:0;right:0;padding:26px 12px 10px;background:linear-gradient(transparent,rgba(74,59,42,.72));color:#fff;
+  font-family:var(--script);font-size:19px;text-align:left;opacity:0;transform:translateY(6px);transition:.3s}
+.sb:hover .cap{opacity:1;transform:none}
 
 /* ---------- Prologue ---------- */
 #prologue{background:radial-gradient(120% 100% at 50% 0%,var(--bg2) 0%,var(--bg) 60%)}
-.prologue-line{font-size:clamp(24px,4vw,34px);font-style:italic;color:var(--cream);line-height:1.5;max-width:700px}
-.prologue-line .hl{color:var(--gold)}
+.prologue-line{font-size:clamp(24px,4vw,34px);font-style:italic;color:var(--ink);line-height:1.5;max-width:740px}
+.prologue-line .hl{color:var(--gold-deep);font-style:normal}
 
 /* ---------- Chapters ---------- */
 .chapter{padding:120px 24px;display:flex;flex-direction:column;justify-content:center}
-.chapter .no{font-family:var(--script);font-size:120px;color:var(--rose);opacity:.7;line-height:.8;margin-bottom:8px}
-.chapter .author{font-family:var(--sans);letter-spacing:.3em;text-transform:uppercase;font-size:12px;color:var(--gold);margin-bottom:8px}
-.chapter .who{font-family:var(--display);font-size:clamp(30px,5vw,48px);font-weight:600;margin-bottom:8px}
-.chapter .role{font-style:italic;color:var(--muted);font-size:19px;margin-bottom:40px}
-.story p{margin-bottom:24px;color:var(--cream);opacity:.92;font-size:20px}
-.story p.quote{border-left:2px solid var(--gold);padding-left:22px;color:var(--gold);font-style:italic;font-size:21px}
+.chapter .no{font-family:var(--script);font-size:120px;color:var(--terracotta);opacity:.65;line-height:.8;margin-bottom:8px}
+.chapter .author{font-family:var(--sans);letter-spacing:.3em;text-transform:uppercase;font-size:12px;color:var(--sage-deep);margin-bottom:8px}
+.chapter .who{font-family:var(--display);font-size:clamp(30px,5vw,48px);font-weight:600;margin-bottom:8px;color:var(--ink)}
+.chapter .role{font-style:italic;color:var(--ink-soft);font-size:19px;margin-bottom:40px}
+.story p{margin-bottom:24px;color:var(--ink);opacity:.94;font-size:20px}
+.story p.quote{border-left:2px solid var(--gold);padding-left:22px;color:var(--gold-deep);font-style:italic;font-size:21px}
+.story p .hl{color:var(--gold-deep);font-weight:600}
+
+/* scene image inside chapter */
+.scene{margin:34px 0 18px;border-radius:18px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line);max-width:520px;margin-left:auto;margin-right:auto}
+.scene img{width:100%;display:block}
 
 /* gift cards */
 .gifts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;margin-top:44px}
-.gift{background:rgba(232,201,122,.05);border:1px solid var(--line);border-radius:16px;padding:26px 22px;transition:.35s;position:relative;overflow:hidden}
-.gift:hover{transform:translateY(-6px);border-color:var(--gold);background:rgba(232,201,122,.09)}
-.gift .gi{font-family:var(--script);font-size:34px;color:var(--rose)}
-.gift .gt{font-family:var(--display);font-size:19px;margin-top:8px;color:var(--cream)}
-.gift .gd{font-size:16px;color:var(--muted);margin-top:6px;font-style:italic}
+.gift{background:rgba(255,248,235,.75);border:1px solid var(--line);border-radius:16px;padding:26px 22px;transition:.35s;position:relative;overflow:hidden;
+  box-shadow:0 4px 18px rgba(120,90,40,.08)}
+.gift:hover{transform:translateY(-6px);border-color:var(--gold);background:#fffdf5}
+.gift .gi{font-family:var(--script);font-size:34px;color:var(--terracotta)}
+.gift .gt{font-family:var(--display);font-size:19px;margin-top:8px;color:var(--ink)}
+.gift .gd{font-size:16px;color:var(--ink-soft);margin-top:6px;font-style:italic}
 
-/* chapter backgrounds */
-.ch-xiaoyen{background:radial-gradient(120% 100% at 100% 0%,#2a1a3a 0%,var(--bg) 55%)}
-.ch-xiaoting{background:radial-gradient(120% 100% at 0% 0%,#2c1a24 0%,var(--bg) 55%)}
-.ch-engyao{background:radial-gradient(120% 100% at 50% 0%,#232028 0%,var(--bg) 60%)}
+/* chapter backgrounds - warm washes, each with a faint storybook tone */
+.ch-xiaoyen{background:radial-gradient(120% 100% at 100% 0%,#efe0c0 0%,var(--bg) 55%)}
+.ch-xiaoting{background:radial-gradient(120% 100% at 0% 0%,#f0e2cf 0%,var(--bg) 55%)}
+.ch-engyao{background:radial-gradient(120% 100% at 50% 0%,#efe6cd 0%,var(--bg) 60%)}
 
 /* ---------- Epilogue ---------- */
-#epilogue{text-align:center;background:radial-gradient(120% 100% at 50% 0%,var(--bg3) 0%,var(--bg) 60%)}
-.ep-script{font-family:var(--script);font-size:clamp(46px,8vw,80px);color:var(--gold);line-height:1.15;margin-bottom:34px}
-.ep-line{font-size:22px;font-style:italic;max-width:680px;margin:0 auto 18px;color:var(--cream)}
-.ep-gift{font-family:var(--display);font-size:clamp(22px,3.5vw,30px);margin:44px auto 20px;color:var(--gold)}
-.sign{display:flex;justify-content:center;gap:38px;flex-wrap:wrap;margin-top:40px;font-family:var(--script);font-size:28px;color:var(--cream)}
-.sign div span{font-family:var(--sans);display:block;font-size:12px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+#epilogue{text-align:center;background:radial-gradient(120% 100% at 50% 0%,var(--bg2) 0%,var(--bg) 60%)}
+.ep-script{font-family:var(--script);font-size:clamp(46px,8vw,80px);color:var(--gold-deep);line-height:1.15;margin-bottom:34px}
+.ep-line{font-size:22px;font-style:italic;max-width:700px;margin:0 auto 18px;color:var(--ink)}
+.ep-script-final{font-family:var(--script);font-size:clamp(40px,7vw,70px);color:var(--terracotta);margin-top:10px}
+.ep-gift{font-family:var(--display);font-size:clamp(22px,3.5vw,30px);margin:44px auto 20px;color:var(--gold-deep)}
+.sign{display:flex;justify-content:center;gap:38px;flex-wrap:wrap;margin-top:40px;font-family:var(--script);font-size:30px;color:var(--ink)}
+.sign div span{font-family:var(--sans);display:block;font-size:12px;letter-spacing:.25em;text-transform:uppercase;color:var(--ink-soft);margin-top:4px}
 
 /* confetti canvas */
 #confetti{position:fixed;inset:0;pointer-events:none;z-index:9998}
@@ -130,13 +175,14 @@ h2.chapter-title{font-family:var(--display);font-size:clamp(34px,6vw,60px);font-
 .float-heart{position:fixed;z-index:9997;font-size:22px;pointer-events:none;animation:rise 3.4s ease-out forwards}
 @keyframes rise{0%{transform:translateY(0) scale(.6);opacity:0}12%{opacity:1;transform:translateY(-30px) scale(1)}100%{transform:translateY(-70vh) scale(.4);opacity:0;filter:blur(1px)}}
 
-footer{position:relative;z-index:2;text-align:center;padding:70px 24px 90px;color:var(--muted);font-size:15px;font-family:var(--sans)}
-footer .big{font-family:var(--script);font-size:44px;color:var(--gold);margin-bottom:10px}
+footer{position:relative;z-index:2;text-align:center;padding:70px 24px 90px;color:var(--ink-soft);font-size:15px;font-family:var(--sans)}
+footer .big{font-family:var(--script);font-size:44px;color:var(--gold-deep);margin-bottom:10px}
 
 @media(max-width:600px){
   .script{font-size:44px}
   .chapter{padding:90px 20px}
   .sign{gap:22px}
+  .storyboard-grid{grid-template-columns:repeat(2,1fr)}
 }
 </style>
 </head>
@@ -145,7 +191,7 @@ footer .big{font-family:var(--script);font-size:44px;color:var(--gold);margin-bo
 <div class="cursor-dot" id="cdot"></div>
 <div class="cursor-ring" id="cring"></div>
 <div id="progress"></div>
-<div id="stars"></div>
+<div id="petals"></div>
 <canvas id="confetti"></canvas>
 
 <!-- ================= HERO ================= -->
@@ -155,11 +201,41 @@ footer .big{font-family:var(--script);font-size:44px;color:var(--gold);margin-bo
     <div class="script reveal d1">Happy Birthday,</div>
     <h1 class="hero-title reveal d1">Mum</h1>
     <p class="hero-sub reveal d2">"The older I get, the more I realise what an extraordinary woman you are."</p>
-    <a class="cta reveal d3" href="#prologue">Begin the story ↓</a>
+    <a class="cta reveal d3" href="#film">Watch our film ↓</a>
     <div class="candles reveal d3">
       <div class="candle"><div class="flame"></div></div>
       <div class="candle"><div class="flame" style="animation-delay:.7s"></div></div>
       <div class="candle"><div class="flame" style="animation-delay:1.3s"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= THE FILM ================= -->
+<section id="film">
+  <div class="wrap">
+    <div class="eyebrow reveal">Made with love · for you</div>
+    <h2 class="chapter-title reveal d1">A Little Film,<br>For Our Mum</h2>
+    <div class="video-frame reveal d2">
+      <iframe src="https://www.youtube.com/embed/hKgPFbnb6iI" title="Mum tribute film" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <p class="film-note reveal d3">The story of a woman who loved with her hands — by Xiao Yen, Xiao Ting &amp; Eng Yao</p>
+  </div>
+</section>
+
+<!-- ================= STORYBOARD ================= -->
+<section id="storyboard">
+  <div class="wrap">
+    <div class="eyebrow reveal">Scenes from the film</div>
+    <h2 class="chapter-title reveal d1">A Life in Little Moments</h2>
+    <div class="storyboard-grid reveal d2">
+      <div class="sb"><img src="still_00.jpg" alt="Bread making"><div class="cap">Made with love</div></div>
+      <div class="sb"><img src="still_07.jpg" alt="Cross-stitch"><div class="cap">Stitch by stitch</div></div>
+      <div class="sb"><img src="still_09.jpg" alt="Freshly baked bread"><div class="cap">Something to be proud of</div></div>
+      <div class="sb"><img src="still_05.jpg" alt="Craft at the table"><div class="cap">Take your time</div></div>
+      <div class="sb"><img src="still_10.jpg" alt="Family meal"><div class="cap">The table came first</div></div>
+      <div class="sb"><img src="still_12.jpg" alt="Church"><div class="cap">Something we caught</div></div>
+      <div class="sb"><img src="still_11.jpg" alt="Writing"><div class="cap">Staying one page ahead</div></div>
+      <div class="sb"><img src="still_14.jpg" alt="Garden"><div class="cap">Hands in the soil</div></div>
     </div>
   </div>
 </section>
@@ -181,8 +257,9 @@ footer .big{font-family:var(--script);font-size:44px;color:var(--gold);margin-bo
     <div class="who reveal d1">Xiao Yen</div>
     <div class="role reveal d2">What she taught us: to flourish, to want boldly, to see possibilities.</div>
     <div class="story">
-      <p class="reveal">You didn't necessarily have every opportunity growing up. Being the youngest in your family, more resources and opportunities sometimes went to the older siblings, and you were the only one who didn't get the chance to go abroad. <span style="color:var(--gold)">But you never let what you didn't have define what you could become.</span> Instead, you took whatever was in your hands and found a way to make it flourish.</p>
+      <p class="reveal">You didn't necessarily have every opportunity growing up. Being the youngest in your family, more resources and opportunities sometimes went to the older siblings, and you were the only one who didn't get the chance to go abroad. <span class="hl">But you never let what you didn't have define what you could become.</span> Instead, you took whatever was in your hands and found a way to make it flourish.</p>
       <p class="reveal">You have always been a woman of wisdom, with a clear and strategic mind — you always think ahead and see possibilities. I especially love that spark in your eyes whenever a new idea or perspective excites you. You are ambitious, curious, and always looking forward.</p>
+      <div class="scene reveal"><img src="still_07.jpg" alt="Cross-stitch"></div>
       <p class="quote reveal">You didn't necessarily have everything growing up — but you never let what you didn't have define what you could become.</p>
       <div class="gifts">
         <div class="gift reveal"><div class="gi">✿</div><div class="gt">Cross-stitch</div><div class="gd">Patience, attention to detail, skills I still use today.</div></div>
@@ -190,8 +267,8 @@ footer .big{font-family:var(--script);font-size:44px;color:var(--gold);margin-bo
         <div class="gift reveal d2"><div class="gi">♛</div><div class="gt">The Musicals</div><div class="gd">Phantom, Les Misérables, Cats — exposure before we knew what it meant.</div></div>
         <div class="gift reveal d3"><div class="gi">☘</div><div class="gt">Nurture</div><div class="gd">People, businesses, ideas… and my plants, greener every time you visit.</div></div>
       </div>
-      <p class="reveal" style="margin-top:44px">Things seem to grow under your care — including the three of us. You raised three very different children and found ways to guide each. Behind all that strength, you have a very big heart: the Boys' Brigade, the old folks in Kulai, underprivileged children, schools. When you believe someone deserves a chance, you don't just talk about helping — <span style="color:var(--gold)">you find a way to do something.</span></p>
-      <p class="reveal">What I wish for you in the years ahead: <span style="color:var(--gold)">good health, freedom to enjoy life on your own terms, and faith to keep you through every season.</span> And the same for Dad — so both of you can enjoy many more years together doing the things you love.</p>
+      <p class="reveal" style="margin-top:44px">Things seem to grow under your care — including the three of us. You raised three very different children and found ways to guide each. Behind all that strength, you have a very big heart: the Boys' Brigade, the old folks in Kulai, underprivileged children, schools. When you believe someone deserves a chance, you don't just talk about helping — <span class="hl">you find a way to do something.</span></p>
+      <p class="reveal">What I wish for you in the years ahead: <span class="hl">good health, freedom to enjoy life on your own terms, and faith to keep you through every season.</span> And the same for Dad — so both of you can enjoy many more years together doing the things you love.</p>
     </div>
   </div>
 </section>
@@ -204,10 +281,11 @@ footer .big{font-family:var(--script);font-size:44px;color:var(--gold);margin-bo
     <div class="who reveal d1">Xiao Ting</div>
     <div class="role reveal d2">What she taught us: to hold things up with love, and to keep going even through fear.</div>
     <div class="story">
-      <p class="reveal">Since I have memory, Mum has been the steady mum who seems to know everything in this world. All the missing items can be found by Mum. Broken things are fixed by Mum and Dad. We baked cakes, cooked meals, made bak zhang, and sewed cross-stitch together — <span style="color:var(--gold)">Mom is the heart of our family, guiding us with strength and love.</span></p>
+      <p class="reveal">Since I have memory, Mum has been the steady mum who seems to know everything in this world. All the missing items can be found by Mum. Broken things are fixed by Mum and Dad. We baked cakes, cooked meals, made bak zhang, and sewed cross-stitch together — <span class="hl">Mom is the heart of our family, guiding us with strength and love.</span></p>
       <p class="quote reveal">Always ready to do anything that comes into mind. After growing up, I realised Mum really had boundless energy to do all kinds of things.</p>
+      <div class="scene reveal"><img src="still_00.jpg" alt="Bread making"></div>
       <p class="reveal">Mum was ever strong and resilient — until the illness came into her life in our early teens. We were worried and feared losing our mum, but we never talked about it. We just wanted to believe it would turn out okay.</p>
-      <p class="reveal">It was a difficult time for Mum, mentally and physically — yet there she was, holding on for us anyway. <span style="color:var(--gold)">She braved through the ordeal.</span> That is where we come from. That resilience isn't just hers anymore — she gave it to us.</p>
+      <p class="reveal">It was a difficult time for Mum, mentally and physically — yet there she was, holding on for us anyway. <span class="hl">She braved through the ordeal.</span> That is where we come from. That resilience isn't just hers anymore — she gave it to us.</p>
       <div class="gifts">
         <div class="gift reveal"><div class="gi">♥</div><div class="gt">The Heart</div><div class="gd">The steady base of the whole family.</div></div>
         <div class="gift reveal d1"><div class="gi">🔥</div><div class="gt">Resilience</div><div class="gd">Strong through the hard years.</div></div>
@@ -226,18 +304,19 @@ footer .big{font-family:var(--script);font-size:44px;color:var(--gold);margin-bo
     <div class="who reveal d1">Eng Yao</div>
     <div class="role reveal d2">What she taught us: to plan three steps ahead, and to be held.</div>
     <div class="story">
-      <p class="reveal">If someone asked me who shaped my life the most, I wouldn't have to think twice. <span style="color:var(--gold)">It's you.</span> My earliest memories are all about being held. I was the most fearful child among my siblings, and you always had your arms open for me — steady, waiting, unconditional.</p>
+      <p class="reveal">If someone asked me who shaped my life the most, I wouldn't have to think twice. <span class="hl">It's you.</span> My earliest memories are all about being held. I was the most fearful child among my siblings, and you always had your arms open for me — steady, waiting, unconditional.</p>
       <p class="quote reveal">"Does Mama ever lie to you?" As a child, that was all the proof I needed to believe anything you said.</p>
-      <p class="reveal">I think I gave you more grey hairs than most — the timid boy, the poor grades. And yet your response wasn't to panic. It was to plan. You taught me to bake and to cook, so that if I ever struggled to find my place, I'd have something to fall back on. <span style="color:var(--gold)">That confidence carried me through far more than baking — it carried me through life.</span></p>
+      <div class="scene reveal"><img src="still_09.jpg" alt="Freshly baked bread"></div>
+      <p class="reveal">I think I gave you more grey hairs than most — the timid boy, the poor grades. And yet your response wasn't to panic. It was to plan. You taught me to bake and to cook, so that if I ever struggled to find my place, I'd have something to fall back on. <span class="hl">That confidence carried me through far more than baking — it carried me through life.</span></p>
       <p class="reveal">The serenity prayer you sewed and framed above my bed — that wasn't decoration. Every night, that quiet reminder was there, and I've whispered it to myself more times than I can count, especially when I needed courage. Thank you for praying over me, always.</p>
-      <p class="reveal">Do you remember the nights we burned the midnight oil together, because I couldn't finish my homework and was terrified of being scolded the next day? You sacrificed your sleep to sit with me and teach me. Because of that, I learned something that's stayed with me ever since: <span style="color:var(--gold)">&ldquo;I can do it — sometimes I just need a little more time.&rdquo;</span></p>
+      <p class="reveal">Do you remember the nights we burned the midnight oil together, because I couldn't finish my homework and was terrified of being scolded the next day? You sacrificed your sleep to sit with me and teach me. Because of that, I learned something that's stayed with me ever since: <span class="hl">&ldquo;I can do it — sometimes I just need a little more time.&rdquo;</span></p>
       <div class="gifts">
         <div class="gift reveal"><div class="gi">🍞</div><div class="gt">Cooking</div><div class="gd">A skill nobody could take from me.</div></div>
         <div class="gift reveal d1"><div class="gi">🕯</div><div class="gt">The Prayer</div><div class="gd">Stitched words above my bed.</div></div>
         <div class="gift reveal d2"><div class="gi">🌙</div><div class="gt">Midnight Oil</div><div class="gd">You sat with me so I wasn't alone.</div></div>
         <div class="gift reveal d3"><div class="gi">✈</div><div class="gt">The Leap of Faith</div><div class="gd">Kulai → KL → Singapore.</div></div>
       </div>
-      <p class="reveal" style="margin-top:44px">Your foresight has proven right again and again — steering me toward accounting instead of shakier ground, pushing me out of my comfort zone to Kuala Lumpur, encouraging me to take the leap to Singapore. Every one of those decisions shaped the life I now have. <span style="color:var(--gold)">That was never luck, Mum. That was you.</span></p>
+      <p class="reveal" style="margin-top:44px">Your foresight has proven right again and again — steering me toward accounting instead of shakier ground, pushing me out of my comfort zone to Kuala Lumpur, encouraging me to take the leap to Singapore. Every one of those decisions shaped the life I now have. <span class="hl">That was never luck, Mum. That was you.</span></p>
     </div>
   </div>
 </section>
@@ -253,7 +332,7 @@ footer .big{font-family:var(--script);font-size:44px;color:var(--gold);margin-bo
     <div class="ep-gift reveal d2">Three of the most important things in life: faith, good health, and freedom.</div>
     <p class="ep-line reveal d3">May the years ahead bring you more places to explore, more people to laugh with, more ideas that put that spark in your eyes — and, most importantly, more moments that make you genuinely happy.</p>
     <div class="ep-script reveal d3">Happy Birthday, Mum</div>
-    <p class="ep-line reveal d3" style="color:var(--gold)">We love you very, very much. ♥♥♥</p>
+    <p class="ep-line reveal d3" style="color:var(--terracotta)">We love you very, very much. ♥♥♥</p>
     <div class="sign reveal d3">
       <div>Xiao Yen<span>the eldest</span></div>
       <div>Xiao Ting<span>the youngest</span></div>
@@ -272,18 +351,9 @@ footer .big{font-family:var(--script);font-size:44px;color:var(--gold);margin-bo
 const cdot=document.getElementById('cdot'),cring=document.getElementById('cring');
 let mx=innerWidth/2,my=innerHeight/2,rx=innerWidth/2,ry=innerHeight/2;
 if(matchMedia('(hover:hover)').matches){
-  window.addEventListener('mousemove',e=>{
-    mx=e.clientX;my=e.clientY;
-    cdot.style.left=mx+'px';cdot.style.top=my+'px';
-    cring.style.opacity=1;
-    cring.style.left=rx+'px';cring.style.top=ry+'px';
-  });
-  (function loop(){
-    rx+=(mx-rx)*.14;ry+=(my-ry)*.14;
-    cring.style.left=rx+'px';cring.style.top=ry+'px';
-    requestAnimationFrame(loop);
-  })();
-  document.querySelectorAll('a,.cta,.gift,.candle').forEach(el=>{
+  window.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cdot.style.left=mx+'px';cdot.style.top=my+'px';cring.style.opacity=1;});
+  (function loop(){rx+=(mx-rx)*.14;ry+=(my-ry)*.14;cring.style.left=rx+'px';cring.style.top=ry+'px';requestAnimationFrame(loop);})();
+  document.querySelectorAll('a,.cta,.gift,.candle,.sb').forEach(el=>{
     el.addEventListener('mouseenter',()=>{cring.style.width='60px';cring.style.height='60px'});
     el.addEventListener('mouseleave',()=>{cring.style.width='40px';cring.style.height='40px'});
   });
@@ -291,27 +361,23 @@ if(matchMedia('(hover:hover)').matches){
 
 /* ---------- Scroll progress ---------- */
 const prog=document.getElementById('progress');
-addEventListener('scroll',()=>{
-  const h=document.documentElement;
-  const p=h.scrollTop/(h.scrollHeight-h.clientHeight);
-  prog.style.width=(p*100)+'%';
-});
+addEventListener('scroll',()=>{const h=document.documentElement;prog.style.width=((h.scrollTop/(h.scrollHeight-h.clientHeight))*100)+'%';});
 
-/* ---------- Stars ---------- */
-const stars=document.getElementById('stars');
-for(let i=0;i<70;i++){
-  const s=document.createElement('div');s.className='star';
-  const sz=Math.random()*2+1;
-  s.style.width=sz+'px';s.style.height=sz+'px';
-  s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';
-  s.style.animationDelay=(Math.random()*4)+'s';
-  stars.appendChild(s);
+/* ---------- Floating petals ---------- */
+const petals=document.getElementById('petals');
+const SYMS=['🌸','🌼','✿','🌷','☘','🌾'];
+for(let i=0;i<16;i++){
+  const p=document.createElement('div');p.className='petal';
+  p.textContent=SYMS[Math.floor(Math.random()*SYMS.length)];
+  p.style.left=Math.random()*100+'%';
+  p.style.fontSize=(12+Math.random()*14)+'px';
+  p.style.animationDuration=(12+Math.random()*14)+'s';
+  p.style.animationDelay=(Math.random()*14)+'s';
+  petals.appendChild(p);
 }
 
 /* ---------- Reveal on scroll ---------- */
-const io=new IntersectionObserver(es=>{
-  es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}});
-},{threshold:.15});
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.15});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
 /* ---------- Confetti blast ---------- */
@@ -319,20 +385,13 @@ const cv=document.getElementById('confetti'),ctx=cv.getContext('2d');
 let W,H,parts=[];
 function resize(){W=cv.width=innerWidth;H=cv.height=innerHeight}
 resize();addEventListener('resize',resize);
-const COLORS=['#e8c97a','#d9a441','#e58b9d','#fff','#f5ecd9'];
+const COLORS=['#c9a227','#a87f1f','#c2703d','#8a9a6b','#e6cf8a','#fff8eb'];
 function burst(count){
   for(let i=0;i<count;i++){
-    parts.push({
-      x:W/2+(Math.random()-0.5)*60,
-      y:H*0.35+(Math.random()-0.5)*40,
-      vx:(Math.random()-0.5)*14,
-      vy:(Math.random()-0.5)*14-6,
-      g:.35+Math.random()*.25,
-      r:3+Math.random()*5,
-      c:COLORS[Math.floor(Math.random()*COLORS.length)],
-      rot:Math.random()*Math.PI,vr:(Math.random()-0.5)*.3,
-      life:120+Math.random()*90
-    });
+    parts.push({x:W/2+(Math.random()-0.5)*60,y:H*0.35+(Math.random()-0.5)*40,
+      vx:(Math.random()-0.5)*14,vy:(Math.random()-0.5)*14-6,g:.35+Math.random()*.25,
+      r:3+Math.random()*5,c:COLORS[Math.floor(Math.random()*COLORS.length)],
+      rot:Math.random()*Math.PI,vr:(Math.random()-0.5)*.3,life:120+Math.random()*90});
   }
 }
 function tick(){
@@ -342,29 +401,26 @@ function tick(){
     p.x+=p.vx;p.y+=p.vy;p.vy+=p.g;p.vx*=.985;p.rot+=p.vr;p.life--;
     ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);
     ctx.fillStyle=p.c;ctx.globalAlpha=Math.min(1,p.life/40);
-    ctx.fillRect(-p.r,-p.r/2,p.r*2,p.r);
-    ctx.restore();
+    ctx.fillRect(-p.r,-p.r/2,p.r*2,p.r);ctx.restore();
   }
-  ctx.globalAlpha=1;
-  requestAnimationFrame(tick);
+  ctx.globalAlpha=1;requestAnimationFrame(tick);
 }
 tick();
 
-/* Hearts on click anywhere */
+/* Hearts + petals burst on click anywhere */
 addEventListener('pointerdown',e=>{
   if(e.target.closest('a'))return;
-  const syms=['♥','✿','♪','★','☘'];
-  const h=document.createElement('div');
-  h.className='float-heart';h.textContent=syms[Math.floor(Math.random()*syms.length)];
-  h.style.left=e.clientX+'px';h.style.top=e.clientY+'px';h.style.color=COLORS[Math.floor(Math.random()*COLORS.length)];
-  document.body.appendChild(h);
-  setTimeout(()=>h.remove(),3600);
+  const syms=['♥','✿','♪','★','☘','🌸'];
+  const h=document.createElement('div');h.className='float-heart';
+  h.textContent=syms[Math.floor(Math.random()*syms.length)];
+  h.style.left=e.clientX+'px';h.style.top=e.clientY+'px';
+  h.style.color=COLORS[Math.floor(Math.random()*COLORS.length)];
+  document.body.appendChild(h);setTimeout(()=>h.remove(),3600);
 });
 
 /* Fire confetti once on load */
 setTimeout(()=>burst(240),900);
 setTimeout(()=>burst(160),1800);
-document.querySelector('.script,.hero-title,#epilogue').onclick=_=>{};
 </script>
 </body>
 </html>
