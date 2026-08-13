@@ -125,6 +125,12 @@ h2.chapter-title{font-family:var(--display);font-size:clamp(34px,6vw,60px);font-
 .sb .cap{position:absolute;bottom:0;left:0;right:0;padding:26px 12px 10px;background:linear-gradient(transparent,rgba(74,59,42,.72));color:#fff;
   font-family:var(--script);font-size:19px;text-align:left;opacity:0;transform:translateY(6px);transition:.3s}
 .sb:hover .cap{opacity:1;transform:none}
+/* ---------- Share row ---------- */
+.share-row{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:22px;flex-wrap:wrap}
+.share-link{font-family:var(--sans);font-size:13px;color:var(--gold-deep);letter-spacing:.04em;word-break:break-all;background:rgba(201,162,39,.08);border:1px solid var(--line);padding:10px 16px;border-radius:999px}
+.copy-btn{font-family:var(--sans);font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold-deep);background:rgba(201,162,39,.12);border:1px solid var(--line);padding:10px 20px;border-radius:999px;cursor:pointer;transition:.3s}
+.copy-btn:hover{background:rgba(201,162,39,.22)}
+.copy-btn.done{background:var(--sage);color:#fff;border-color:var(--sage)}
 
 /* ---------- Prologue ---------- */
 #prologue{background:radial-gradient(120% 100% at 50% 0%,var(--bg2) 0%,var(--bg) 60%)}
@@ -216,9 +222,13 @@ footer .big{font-family:var(--script);font-size:44px;color:var(--gold-deep);marg
     <div class="eyebrow reveal">Made with love · for you</div>
     <h2 class="chapter-title reveal d1">A Little Film,<br>For Our Mum</h2>
     <div class="video-frame reveal d2">
-      <iframe src="https://www.youtube.com/watch?v=HDzAmdowhB8" title="Mum tribute film" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/HDzAmdowhB8" title="Mum tribute film" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
     <p class="film-note reveal d3">The story of a woman who loved with her hands — by Xiao Yen, Xiao Ting &amp; Eng Yao</p>
+    <div class="share-row reveal d3">
+      <span class="share-link" id="shareLink">https://youtu.be/HDzAmdowhB8</span>
+      <button class="copy-btn" id="copyBtn" type="button" onclick="copyShare()">Copy link</button>
+    </div>
   </div>
 </section>
 
@@ -422,6 +432,14 @@ addEventListener('pointerdown',e=>{
 /* Fire confetti once on load */
 setTimeout(()=>burst(240),900);
 setTimeout(()=>burst(160),1800);
+
+/* Copy share link */
+function copyShare(){
+  const t=document.getElementById('shareLink').textContent.trim();
+  (navigator.clipboard?navigator.clipboard.writeText(t):(()=>{const e=document.createElement('textarea');e.value=t;document.body.appendChild(e);e.select();document.execCommand('copy');e.remove()})());
+  const b=document.getElementById('copyBtn');b.textContent='Copied ✓';b.classList.add('done');
+  setTimeout(()=>{b.textContent='Copy link';b.classList.remove('done')},2000);
+}
 </script>
 </body>
 </html>
